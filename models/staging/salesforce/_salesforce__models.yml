@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: stg_salesforce__account
+    description: "Cleaned and standardized Salesforce Account data."
+
+    columns:
+      - name: account_id
+        description: "Unique Salesforce Account identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_name
+        description: "Salesforce Account name."
+
+      - name: industry
+        description: "Industry assigned to the Salesforce Account."
+
+      - name: account_type
+        description: "Salesforce Account classification."
+
+      - name: annual_revenue
+        description: "Annual revenue reported on the Salesforce Account."
+
+      - name: created_at
+        description: "Timestamp when the Salesforce Account was created."
+
+      - name: modified_at
+        description: "Timestamp when the Salesforce Account was last modified."
+
+  - name: stg_salesforce__opportunity
+    description: "Cleaned and standardized Salesforce Opportunity data."
+
+    columns:
+      - name: opportunity_id
+        description: "Unique Salesforce Opportunity identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Salesforce Account associated with the Opportunity."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_salesforce__account')
+                field: account_id
+
+      - name: sales_rep_id
+        description: "Salesforce User who owns the Opportunity."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_salesforce__user')
+                field: sales_rep_id
+
+      - name: opportunity_stage
+        description: "Current stage of the Salesforce Opportunity."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - 'Closed Won'
+                  - 'Negotiation'
+                  - 'Proposal'
+                  - 'Prospecting'
+                  - 'Qualification'
+
+  - name: stg_salesforce__user
+    description: "Cleaned and standardized Salesforce User data."
+
+    columns:
+      - name: sales_rep_id
+        description: "Unique Salesforce User identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: sales_rep_email
+        description: "Email address of the Salesforce User."
+
+      - name: sales_rep_is_active
+        description: "Indicates whether the Salesforce User is active."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false

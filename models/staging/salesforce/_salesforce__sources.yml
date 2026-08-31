@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: salesforce
+    description: "Raw Salesforce data landed in Snowflake by Fivetran."
+    database: RAW
+    schema: SALESFORCE
+
+    tables:
+      - name: account
+        description: "Raw Salesforce Account records."
+
+      - name: opportunity
+        description: "Raw Salesforce Opportunity records."
+
+      - name: user
+        description: "Raw Salesforce User records."

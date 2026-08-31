@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_salesforce__opportunity_enriched
+    description: "Opportunity records enriched with related Account and Sales Rep attributes."
+
+    columns:
+      - name: opportunity_id
+        description: "Unique Salesforce Opportunity identifier."
+        data_tests:
+          - not_null
+          - unique

@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: dim_account
+    description: "BI-ready Account dimension."
+
+    columns:
+      - name: account_id
+        description: "Unique Account identifier."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_sales_rep
+    description: "BI-ready Sales Rep dimension."
+
+    columns:
+      - name: sales_rep_id
+        description: "Unique Sales Rep identifier."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: fct_opportunity
+    description: "BI-ready Opportunity fact table at one row per Opportunity."
+
+    columns:
+      - name: opportunity_id
+        description: "Unique Opportunity identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Account associated with the Opportunity."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_account')
+                field: account_id
+
+      - name: sales_rep_id
+        description: "Sales Rep who owns the Opportunity."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_sales_rep')
+                field: sales_rep_id
