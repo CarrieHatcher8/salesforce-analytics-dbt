@@ -136,3 +136,7 @@ This project emphasizes:
 - Separation of ingestion, transformation, and consumption responsibilities
 - Least-privilege access
 - Maintainability and downstream impact visibility
+
+## Development Workflow
+
+Changes to analytics models are developed on feature branches, validated with `dbt build`, and reviewed through pull requests before being merged into `main`.
