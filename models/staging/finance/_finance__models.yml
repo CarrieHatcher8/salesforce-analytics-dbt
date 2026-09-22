@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: stg_finance__contract
+    description: "Standardized Finance contract records. Grain is one row per contract."
+    columns:
+      - name: contract_id
+        description: "Unique Finance contract identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: finance_customer_id
+        description: "Finance source-system customer identifier."
+        data_tests:
+          - not_null
+
+      - name: contract_value
+        description: "Total contracted value."
+        data_tests:
+          - not_null
+
+      - name: contract_status
+        description: "Current Finance contract status."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['EXECUTED', 'PENDING']
+
+  - name: stg_finance__revenue
+    description: "Standardized Finance revenue-recognition records. Grain is one revenue-recognition event per contract and accounting period."
+    columns:
+      - name: revenue_id
+        description: "Unique revenue-recognition record identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: contract_id
+        description: "Finance contract associated with the recognized revenue."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_finance__contract')
+                field: contract_id
+                config:
+                 severity: warn
+
+      - name: accounting_period
+        description: "Accounting period in which Finance recognized the revenue."
+        data_tests:
+          - not_null
+
+      - name: recognized_revenue
+        description: "Revenue amount recognized by Finance for the accounting period."
+        data_tests:
+          - not_null
+
+  - name: stg_finance__cash_receipt
+    description: "Standardized Finance cash receipt records. Grain is one customer payment received against a contract."
+    columns:
+      - name: receipt_id
+        description: "Unique cash receipt identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: contract_id
+        description: "Finance contract associated with the cash receipt."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_finance__contract')
+                field: contract_id
+
+      - name: receipt_date
+        description: "Date the customer payment was received."
+        data_tests:
+          - not_null
+
+      - name: cash_amount
+        description: "Amount of cash received."
+        data_tests:
+          - not_null
+
+  - name: stg_finance__customer_xref
+    description: "Governed cross-system customer mapping between Salesforce and Finance."
+    columns:
+      - name: enterprise_customer_key
+        description: "Composite enterprise customer key containing the Salesforce and Finance customer identifiers."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: salesforce_account_id
+        description: "Customer identifier from Salesforce."
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_salesforce__account')
+                field: account_id
+
+
+      - name: finance_customer_id
+        description: "Customer identifier from Finance."
+        data_tests:
+          - not_null
+          - unique

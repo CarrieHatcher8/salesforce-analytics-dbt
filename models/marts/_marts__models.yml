@@ -48,3 +48,32 @@ models:
               arguments:
                 to: ref('dim_sales_rep')
                 field: sales_rep_id
+
+  - name: fct_contract_performance_monthly
+    description: "BI-ready financial performance fact table at one row per contract per reporting month."
+
+    columns:
+      - name: contract_id
+        description: "Contract represented by the monthly financial activity."
+        data_tests:
+          - not_null
+
+      - name: reporting_month
+        description: "Month in which the financial activity occurred."
+        data_tests:
+          - not_null
+
+      - name: booking_amount
+        description: "Contract value booked during the reporting month."
+        data_tests:
+          - not_null
+
+      - name: recognized_revenue
+        description: "Revenue recognized during the reporting month."
+        data_tests:
+          - not_null
+
+      - name: cash_collected
+        description: "Cash collected during the reporting month."
+        data_tests:
+          - not_null
