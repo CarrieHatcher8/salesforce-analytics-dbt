@@ -15,6 +15,12 @@ The focus isn't just getting data from point A to point B. It's making sure ther
 
 > **Note:** All data in this repository is synthetic and was created specifically for this project. No proprietary or production company data is included.
 
+### Business Rules
+
+For a deeper look at how I defined the metrics, handled data-quality exceptions, and made decisions about analytical grain, see [Business Rules and Metric Definitions](docs/business_rules.md).
+
+
+
 ---
 
 ## What I Built
