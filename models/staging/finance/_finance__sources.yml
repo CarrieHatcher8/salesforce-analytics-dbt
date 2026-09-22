@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: finance
+    database: RAW
+    schema: FINANCE
+    description: >
+      Synthetic Finance/ERP source data used for enterprise KPI
+      governance and cross-system analytics.
+
+    tables:
+      - name: contract
+        description: >
+          Executed and pending customer contracts. One row represents
+          one contract.
+
+      - name: revenue
+        description: >
+          Finance revenue-recognition events. One row represents
+          recognized revenue for a contract in an accounting period.
+
+      - name: cash_receipt
+        description: >
+          Customer cash receipts. One row represents one payment
+          received against a contract.
+          
+      - name: customer_xref
+        description: "Governed cross-system customer mapping between Salesforce and Finance."
