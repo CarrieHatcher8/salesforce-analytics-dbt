@@ -97,9 +97,7 @@ FIN-C001
 I created a customer crosswalk that establishes a shared enterprise identity while retaining the original source-system identifiers:
 
 ```text
-ACC001 + FIN-C001
-        ↓
-ACC001-FIN-C001
+ACC001 + FIN-C001  ->   ACC001-FIN-C001
 ```
 
 That gives us a common customer identity without destroying the lineage back to either system.
@@ -145,11 +143,11 @@ The grain is:
 For example:
 
 ```text
-Contract   Month      Bookings   Revenue   Cash
+Contract   Month      Bookings     Revenue   Cash
 -------------------------------------------------
-CON-1003   Mar-2026   400,000    100,000   200,000
-CON-1003   Apr-2026         0    100,000         0
-CON-1003   May-2026         0    100,000   100,000
+CON-1003    Mar-2026   400,000    100,000     200,000
+CON-1003    Apr-2026         0    100,000           0
+CON-1003    May-2026         0    100,000     100,000
 ```
 
 This was important to me because I wanted the resulting dataset to behave correctly in a BI tool.
@@ -206,14 +204,14 @@ Instead, the project follows this pattern:
 
 ```text
 Detect
-  ↓
-Classify
-  ↓
-Quarantine
-  ↓
-Expose for investigation
-  ↓
-Allow valid data to continue
+  ->
+    Classify
+       ->
+         Quarantine
+               ->
+                 Expose for investigation
+                             ->
+                           Allow valid data to continue
 ```
 
 The questionable records are excluded from the governed KPI models but remain available in:
@@ -270,7 +268,7 @@ I also expose a `customer_mapping_status` so unmapped records can be identified 
 - `fct_bookings`
 - `fct_recognized_revenue`
 - `fct_cash_collected`
-- `fct_contract_performance_monthly`
+- `fct_contract_performance_monthlly`
 
 ### Data Quality
 
@@ -328,7 +326,7 @@ After building the final monthly mart, I reconciled the output back to the valid
 | Mar 2026 | $750,000 | $300,000 | $275,000 |
 | Apr 2026 | $325,000 | $250,000 | $300,000 |
 | May 2026 | $0 | $200,000 | $100,000 |
-| **Total** | **$1,450,000** | **$900,000** | **$850,000** |
+     |      **Total** |  **$1,450,000** |   **$900,000** |  **$850,000** |
 
 The quarantined $180,000 pending contract is not included in Bookings.
 
@@ -389,7 +387,7 @@ The goal is to keep transformation and metric logic centralized rather than bury
 - Git / GitHub
 - Visual Studio Code
 - PowerShell
-- Python virtual environment
+
 
 The architecture is designed to work with ingestion tools such as **Fivetran** and downstream BI platforms such as **Tableau**.
 
